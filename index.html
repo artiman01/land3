@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Светлана — Таролог</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #faf7f2;
+            --bg-warm: #f3ece3;
+            --gold: #b8956a;
+            --gold-light: #d4b896;
+            --gold-dark: #8a6d4b;
+            --text: #2a2520;
+            --text-light: #6b6055;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Золотые частицы на фоне */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--gold-light);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: drift linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Hero с фото */
+        .hero {
+            position: relative;
+            padding: 3rem 1.5rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 100%);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .photo-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .photo-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold-light);
+            animation: pulse-ring 3s ease-in-out infinite;
+        }
+
+        .photo-ring:nth-child(2) {
+            inset: -14px;
+            border-color: rgba(184,149,106,0.3);
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.7; }
+        }
+
+        .photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--white);
+            box-shadow: 0 15px 40px rgba(42,37,32,0.15), 0 0 0 1px rgba(184,149,106,0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.04em;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--gold-dark);
+            margin-bottom: 1.2rem;
+            font-weight: 400;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-light);
+            max-width: 300px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .scroll-hint {
+            margin-top: 2rem;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.5;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* Разделители */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2.5rem 0;
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+        }
+
+        /* О себе */
+        .about {
+            padding: 0 1.8rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            text-align: center;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .about-text em {
+            color: var(--gold-dark);
+            font-style: italic;
+        }
+
+        /* Услуги */
+        .services {
+            padding: 0 1.2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            text-align: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(42,37,32,0.04);
+            border: 1px solid rgba(184,149,106,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 8px 30px rgba(42,37,32,0.08);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.6rem;
+        }
+
+        .service-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .service-price {
+            font-size: 0.9rem;
+            color: var(--gold-dark);
+            font-weight: 500;
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+
+        .service-desc {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        /* Отзывы */
+        .reviews {
+            padding: 1rem 1.5rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-card {
+            background: linear-gradient(135deg, var(--bg-warm), var(--bg));
+            border: 1px solid rgba(184,149,106,0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .review-card::before {
+            content: '"';
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--gold-light);
+            opacity: 0.4;
+            line-height: 1;
+        }
+
+        .review-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-author {
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* CTA секция */
+        .cta {
+            padding: 3rem 1.5rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg) 0%, var(--bg-warm) 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .cta-sub {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--text);
+            color: var(--bg);
+            border: none;
+            padding: 1.1rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(42,37,32,0.2);
+        }
+
+        .telegram-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .telegram-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 15px rgba(42,37,32,0.15);
+        }
+
+        .telegram-btn:active::after {
+            left: 100%;
+        }
+
+        .tg-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Футер */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(184,149,106,0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+
+        /* Анимации появления */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <!-- Анимированные частицы -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Hero с фото -->
+    <section class="hero">
+        <div class="photo-wrapper reveal">
+            <div class="photo-ring"></div>
+            <div class="photo-ring"></div>
+            <!-- ЗАМЕНИТЕ src НА ПУТЬ К ВАШЕМУ ФОТО -->
+            <img src="./logo.jpg" alt="Светлана — Таролог" class="photo" id="profilePhoto">
+        </div>
+        
+        <h1 class="name reveal delay-1">Светлана</h1>
+        <p class="subtitle reveal delay-2">Таролог · Экстрасенсорика · Наставник</p>
+        <p class="tagline reveal delay-2">
+            Помогаю увидеть истину через символы карт. 
+            Более 10 лет практики и сотни раскрытых судеб.
+        </p>
+        <div class="scroll-hint reveal delay-3"></div>
+    </section>
+
+    <!-- О себе -->
+    <section class="about">
+        <div class="divider reveal">◆</div>
+        <p class="about-text reveal">
+            Каждая карта — это зеркало вашей души. <em>Я не предсказываю будущее, я открываю пути,</em> которые уже заложены в вашей энергии. Доверьтесь магии Таро, и вы услышите ответы, которые искали.
+        </p>
+        <div class="divider reveal">◆</div>
+    </section>
+
+    <!-- Услуги -->
+    <section class="services">
+        <div class="section-label reveal">Выберите свой расклад</div>
+        
+        <div class="service-card reveal">
+            <div class="service-header">
+                <span class="service-name">Карта дня</span>
+                <span class="service-price">500 ₽</span>
+            </div>
+            <div class="service-desc">Ежедневное направление от карт. Совет на предстоящие 24 часа.</div>
+        </div>
+
+        <div class="service-card reveal">
+            <div class="service-header">
+                <span class="service-name">Расклад на отношения</span>
+                <span class="service-price">2 500 ₽</span>
+            </div>
+            <div class="service-desc">Анализ чувств, намерений партнёра и перспективы пары. 10 карт, 45 минут.</div>
+        </div>
+
+        <div class="service-card reveal">
+            <div class="service-header">
+                <span class="service-name">Кельтский крест</span>
+                <span class="service-price">3 500 ₽</span>
+            </div>
+            <div class="service-desc">Классический 10-картовый расклад для глубокого анализа любой ситуации.</div>
+        </div>
+
+        <div class="service-card reveal">
+            <div class="service-header">
+                <span class="service-name">Годовой прогноз</span>
+                <span class="service-price">5 000 ₽</span>
+            </div>
+            <div class="service-desc">12 карт на каждый месяц + ключевые события и рекомендации на год.</div>
+        </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="reviews">
+        <div class="section-label reveal">Слова благодарности</div>
+        
+        <div class="review-card reveal">
+            <div class="review-text">Светлана увидела то, что я скрывала даже от себя. Через месяц всё сложилось именно так, как предрекали карты.</div>
+            <div class="review-author">— Анна М.</div>
+        </div>
+
+        <div class="review-card reveal">
+            <div class="review-text">Не верила в Таро до нашей встречи. Теперь обращаюсь только к ней перед важными решениями.</div>
+            <div class="review-author">— Екатерина В.</div>
+        </div>
+
+        <div class="review-card reveal">
+            <div class="review-text">Атмосфера полного доверия и света. Светлана — не просто таролог, а настоящий проводник.</div>
+            <div class="review-author">— Дмитрий С.</div>
+        </div>
+    </section>
+
+    <!-- Кнопка Telegram -->
+    <section class="cta">
+        <h2 class="cta-title reveal">Начните путь к себе</h2>
+        <p class="cta-sub reveal">Ответьте на несколько вопросов в Telegram, и я подберу для вас идеальный расклад</p>
+        
+        <!-- ВНИМАНИЕ: замените # на вашу ссылку https://t.me/username -->
+        <a href="#" class="telegram-btn reveal" id="tgLink">
+            <svg class="tg-icon" viewBox="0 0 24 24">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            Написать в Telegram
+        </a>
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 Светлана · Все права защищены</p>
+    </footer>
+
+    <script>
+        // Частицы
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = p.style.height = (Math.random() * 3 + 2) + 'px';
+            p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            container.appendChild(p);
+        }
+
+        // Появление элементов при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Напоминание про заглушку
+        document.getElementById('tgLink').addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') {
+                e.preventDefault();
+                alert('Замените href="#" на вашу Telegram-ссылку в коде');
+            }
+        });
+    </script>
+</body>
+</html>
